@@ -13,6 +13,12 @@ def cli():
 
 
 @cli.command()
+def s():
+    """Starts the development server"""
+    os.system("python manage.py")
+
+
+@cli.command()
 @click.argument("app_name")
 def new(app_name):
     if os.path.exists(app_name):
