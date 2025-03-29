@@ -8,27 +8,35 @@ APP_STRUCTURE = [
     "app/templates",
     "config",
     "db/migrations",
-    "pytracks"
+    "pytracks",
 ]
+
 
 @click.group()
 def cli():
     pass
 
+
 @cli.command()
-@click.argument('app_name')
+@click.argument("app_name")
 def new(app_name):
-    os.makedirs(app_name, exist_ok=True)
+    if os.path.exists(app_name):
+        click.echo(f"Error: Directory '{app_name}' already exists.")
+        return
+
+    os.makedirs(app_name)
     os.chdir(app_name)
 
     for path in APP_STRUCTURE:
         os.makedirs(path, exist_ok=True)
 
     with open("manage.py", "w") as f:
-        f.write("""#!/usr/bin/env python
+        f.write(
+            """#!/usr/bin/env python
 if __name__ == '__main__':
     print('PyTracks manage script placeholder')
-""")
+"""
+        )
 
     with open("requirements.txt", "w") as f:
         f.write("flask\nclick\n")
@@ -40,4 +48,3 @@ if __name__ == '__main__':
         f.write("# Core framework logic will go here\n")
 
     click.echo(f"PyTracks app '{app_name}' created.")
-
