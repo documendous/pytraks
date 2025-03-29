@@ -1,15 +1,10 @@
 import os
 import click
 
-APP_STRUCTURE = [
-    "app/models",
-    "app/views",
-    "app/controllers",
-    "app/templates",
-    "config",
-    "db/migrations",
-    "pytracks",
-]
+from .config import (
+    APP_STRUCTURE,
+    TASKS,
+)
 
 
 @click.group()
@@ -30,21 +25,7 @@ def new(app_name):
     for path in APP_STRUCTURE:
         os.makedirs(path, exist_ok=True)
 
-    with open("manage.py", "w") as f:
-        f.write(
-            """#!/usr/bin/env python
-if __name__ == '__main__':
-    print('PyTracks manage script placeholder')
-"""
-        )
-
-    with open("requirements.txt", "w") as f:
-        f.write("flask\nclick\n")
-
-    with open("config/routes.py", "w") as f:
-        f.write("# Define your routes here\n")
-
-    with open("pytracks/core.py", "w") as f:
-        f.write("# Core framework logic will go here\n")
+    for run_task in TASKS:
+        run_task()
 
     click.echo(f"PyTracks app '{app_name}' created.")
