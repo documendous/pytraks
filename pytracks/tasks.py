@@ -9,8 +9,17 @@ def create_manage_script():
     with open(MANAGE_SCRIPT, "w") as f:
         f.write(
             """#!/usr/bin/env python
+
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return 'Welcome to PyTracks!'
+
 if __name__ == '__main__':
-    print('PyTracks manage script placeholder')
+    app.run(debug=True)
 """
         )
 
