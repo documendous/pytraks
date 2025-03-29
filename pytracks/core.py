@@ -14,10 +14,21 @@ def cli():
 
 
 @cli.command()
-def s():
+@click.option("--port", "-p", type=int, default=None, help="Port to run the server on")
+@click.option(
+    "--host", "-h", default=None, help="Host or host:port combo (e.g. 0.0.0.0:8000)"
+)
+def s(port, host):
     """Starts the development server"""
+    if host and ":" in host:
+        host, extracted_port = host.split(":", 1)
+        port = int(extracted_port)
+
+    host = host or "127.0.0.1"
+    port = port or 5000
+
     try:
-        subprocess.run(["python", "manage.py"], check=True)
+        subprocess.run(["python", "manage.py", str(port), host], check=True)
     except subprocess.CalledProcessError as e:
         click.echo(f"Error: {e}")
 

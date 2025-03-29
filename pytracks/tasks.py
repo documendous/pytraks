@@ -5,11 +5,10 @@ CORE_FILE = "pytracks/core.py"
 
 
 def create_manage_script():
-    """Creates a manage script"""
     with open(MANAGE_SCRIPT, "w") as f:
         f.write(
             """#!/usr/bin/env python
-
+import sys
 from flask import Flask
 
 app = Flask(__name__)
@@ -19,7 +18,10 @@ def index():
     return 'Welcome to PyTracks!'
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    import sys
+    port = int(sys.argv[1]) if len(sys.argv) > 1 else 5000
+    host = sys.argv[2] if len(sys.argv) > 2 else '127.0.0.1'
+    app.run(debug=True, port=port, host=host)
 """
         )
 
