@@ -1,4 +1,5 @@
 import os
+import subprocess
 import click
 
 from .config import (
@@ -15,7 +16,10 @@ def cli():
 @cli.command()
 def s():
     """Starts the development server"""
-    os.system("python manage.py")
+    try:
+        subprocess.run(["python", "manage.py"], check=True)
+    except subprocess.CalledProcessError as e:
+        click.echo(f"Error: {e}")
 
 
 @cli.command()
